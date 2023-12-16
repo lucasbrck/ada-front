@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 import { Colors } from "styles/constants";
 
 export const Paper = styled.div`
@@ -32,6 +32,38 @@ export const StyledContainer = styled.div`
   height: 100%;
   min-height: 100vh;
   position: relative;
+`;
+
+
+const tiltAnimation = keyframes`
+  0% {
+    left: 0;
+    transform: rotateY(180deg);
+  }
+  49% {
+    transform: rotateY(180deg);
+  }
+  50% {
+    left: 80%;
+    transform: rotateY(0deg);
+  }
+  99% {
+    transform: rotateY(0deg);
+  }
+  100% {
+    left: 0;
+    transform: rotateY(180deg);
+  }
+ 
+`;
+
+export const TiltedImage = styled.img`
+  position: fixed;
+  margin-left: 50px;
+  bottom: 0;
+  z-index: 2;
+  width: 100px;
+  animation: ${tiltAnimation} 10s linear infinite;
 `;
 
 export const PageContainer = styled.div``;

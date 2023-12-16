@@ -1,0 +1,27 @@
+import * as I from "assets/images/tirinhas";
+
+export const data: { image: string }[] = [
+  { image: I.tira1 },
+  { image: I.tira2 },
+  { image: I.tira3 },
+  { image: I.tira4 },
+  { image: I.tira5 },
+  { image: I.tira6 },
+  { image: I.tira7 },
+  { image: I.tira7b },
+  { image: I.tira8 },
+  { image: I.tira9 },
+  { image: I.tira10 },
+  { image: I.tira11 },
+  { image: I.tira12 },
+  { image: I.tira13 },
+  { image: I.tira14 },
+  { image: I.tira15 },
+  { image: I.tira16 },
+  { image: I.tira17 },
+  { image: I.tira18 },
+  { image: I.tira19 },
+  { image: I.tira20 },
+  { image: I.tira21 },
+  { image: I.tira22 },
+];
