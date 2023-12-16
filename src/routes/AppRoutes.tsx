@@ -1,6 +1,5 @@
 import Scaffold from "layouts/Scaffold";
 import { Personagens, Home, About,Tirinhas } from "pages";
-import React from "react";
 import { Route, Routes } from "react-router-dom";
 
 const AppRoutes = () => {

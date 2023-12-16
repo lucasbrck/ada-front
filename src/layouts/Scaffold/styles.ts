@@ -1,4 +1,4 @@
-import styled, { css, keyframes } from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { Colors } from "styles/constants";
 
 export const Paper = styled.div`

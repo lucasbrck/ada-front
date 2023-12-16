@@ -1,6 +1,5 @@
 import StickerText, { StickerOptions } from "components/StickerText";
 import styled, { css } from "styled-components";
-import { Colors } from "styles/constants";
 
 export const Container = styled.div`
   display: grid;
@@ -29,6 +28,6 @@ export const StyledOptions = styled(StickerOptions)<OptionsProps>`
     position: absolute;
     top: -5px;
     transform: skew(-12deg);
-    border-bottom: solid 15px rgba(238,111,87,0.5)`
-  }
+    border-bottom: solid 15px rgba(238,111,87,0.5);
+  }`
 }`
