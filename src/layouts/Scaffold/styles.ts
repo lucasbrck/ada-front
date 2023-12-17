@@ -1,5 +1,23 @@
 import styled, { keyframes } from "styled-components";
 import { Colors } from "styles/constants";
+import TopMenu from "components/TopMenu";
+import AsideMenu from "components/AsideMenu";
+
+export const STopMenu = styled(TopMenu)`
+  display: block;
+
+  @media (max-width: 600px) {
+    display: none;
+  }
+`;
+
+export const SAsideMenu = styled(AsideMenu)`
+  display: none;
+
+  @media (min-width: 601px) {
+    display: block;
+  }
+`;
 
 export const Paper = styled.div`
   width: 85vw;
@@ -18,6 +36,9 @@ export const Paper = styled.div`
     top: 0;
     left: 80px;
     background-color: rgba(255, 0, 0, 0.6);
+    @media (width <= 600px) {
+      left: 40px;
+    }
   }
 `;
 
@@ -33,7 +54,6 @@ export const StyledContainer = styled.div`
   min-height: 100vh;
   position: relative;
 `;
-
 
 const tiltAnimation = keyframes`
   0% {
@@ -64,6 +84,9 @@ export const TiltedImage = styled.img`
   z-index: 2;
   width: 100px;
   animation: ${tiltAnimation} 10s linear infinite;
+  @media (width <= 600px) {
+    width: 50px;
+  }
 `;
 
 export const PageContainer = styled.div``;

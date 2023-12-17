@@ -6,6 +6,7 @@ export const Container = styled.div`
   width: 100%;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
 `;
 
 export const Handwrite = styled.h1`
@@ -13,4 +14,8 @@ export const Handwrite = styled.h1`
   font-size: 40px;
   z-index: 1;
   user-select: none;
+  @media (width <= 600px) {
+      font-size: 20px;
+      max-width: 80%;
+    }
 `

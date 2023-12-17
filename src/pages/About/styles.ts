@@ -14,6 +14,9 @@ export const Title = styled.h2`
   width: fit-content;
   color: #000f55;
   font-size: 40px;
+  @media (width <= 600px) {
+    font-size: 25px;
+  }
   &:after {
     content: "";
     width: 100%;
@@ -22,22 +25,29 @@ export const Title = styled.h2`
     top: -18px;
     transform: skew(-12deg);
     border-bottom: solid 15px rgba(238, 111, 87, 0.5);
+    @media (width <= 600px) {
+      border-bottom: solid 5px rgba(238, 111, 87, 0.5);
+      top: -10px;
+    }
   }
 `;
 
 export const TextsContainer = styled.div`
-width:95%;
-z-index:1;
-display:grid;
-row-gap: 35px;
-grid-template-columns: 1fr 1fr;
-`
+  width: 95%;
+  z-index: 1;
+  display: grid;
+  row-gap: 35px;
+  grid-template-columns: 1fr 1fr;
+`;
 export const ContentContainer = styled.div`
   background-color: white;
   padding: 50px;
   display: flex;
   flex-direction: column;
   text-align: justify;
+  @media (width <= 600px) {
+    padding: 15px;
+  }
   &:before {
     content: "";
     position: relative;
@@ -48,6 +58,12 @@ export const ContentContainer = styled.div`
     transform: rotate(-55deg);
     clip-path: polygon(0% 0%, 100% 0%, 90% 100%, 10% 100%);
   }
+  img {
+    @media (width <= 600px) {
+      width: 15px;
+      height: 15px;
+    }
+  }
 `;
 export const Content = styled.text`
   font-family: ${Fonts.GilroySemiBold}, cursive;
@@ -55,10 +71,16 @@ export const Content = styled.text`
   font-size: 20px;
   line-height: 1;
   text-align: justify;
+  @media (width <= 600px) {
+    font-size: 13px;
+  }
 `;
 
 export const Image = styled.img`
-justify-self: center;
-align-self: center;
-max-width:300px
-`
+  justify-self: center;
+  align-self: center;
+  max-width: 300px;
+  @media (width <= 600px) {
+    max-width: 100%;
+  }
+`;

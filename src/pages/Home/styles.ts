@@ -53,13 +53,14 @@ export const Presentation = styled.h1`
   width: fit-content;
   height: fit-content;
   user-select: none;
-  /* background: #dfff00; */
   color: #000f55;
   overflow: hidden;
   padding: 30px;
-  /* box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.75);
-  border-radius: 0 0 0 30px/45px; */
   font-size: 50px;
+  @media (width <= 600px) {
+    padding: 30px;
+    font-size: 25px;
+  }
 `;
 
 export const Info = styled.h1`

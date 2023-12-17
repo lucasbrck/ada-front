@@ -4,10 +4,10 @@ import GilroyBold from "assets/fonts/Gilroy-Bold.otf";
 import GilroySemiBold from "assets/fonts/Gilroy-SemiBold.otf";
 import GilroyMedium from "assets/fonts/Gilroy-Medium.otf";
 import GilroyRegular from "assets/fonts/Gilroy-Regular.otf";
-import Fredoka from 'assets/fonts/Fredoka.otf'
-import Rancho from 'assets/fonts/Rancho-Regular.ttf'
-import Marker from "assets/fonts/PermanentMarker-Regular.ttf"
-import HomemadeApple from "assets/fonts/HomemadeApple-Regular.ttf"
+import Fredoka from "assets/fonts/Fredoka.otf";
+import Rancho from "assets/fonts/Rancho-Regular.ttf";
+import Marker from "assets/fonts/PermanentMarker-Regular.ttf";
+import HomemadeApple from "assets/fonts/HomemadeApple-Regular.ttf";
 import { Fonts, ColorScheme, getScrollbarStyle } from "./constants.ts";
 
 const general = css`
@@ -29,6 +29,8 @@ const general = css`
     font-size: 16px;
     font-weight: normal;
     ${getScrollbarStyle()};
+    min-width: 320px;
+    min-height: 100vh;
   }
   body.no-scroll {
     overflow: hidden;
@@ -59,7 +61,6 @@ const general = css`
   ul {
     list-style: none;
   }
-  
 `;
 
 const animations = css`
@@ -136,7 +137,7 @@ const fontface = css`
     src: url(${Fredoka});
   }
   @font-face {
-    font-family: 'Rancho';
+    font-family: "Rancho";
     src: url(${Rancho});
   }
   @font-face {
@@ -144,10 +145,10 @@ const fontface = css`
     src: url(${Marker});
   }
   @font-face {
-    font-family: "HomemadeApple" ;
+    font-family: "HomemadeApple";
     src: url(${HomemadeApple});
   }
-  @import url('https://fonts.googleapis.com/css2?family=Grandstander:wght@500&display=swap');
+  @import url("https://fonts.googleapis.com/css2?family=Grandstander:wght@500&display=swap");
 `;
 
 export default createGlobalStyle`

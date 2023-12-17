@@ -1,5 +1,5 @@
-import styled, { keyframes } from 'styled-components';
-import { Fonts } from 'styles/constants';
+import styled, { keyframes } from "styled-components";
+import { Fonts } from "styles/constants";
 
 export const Container = styled.div`
   display: grid;
@@ -7,6 +7,10 @@ export const Container = styled.div`
   column-gap: 15px;
   row-gap: 45px;
   margin-left: 90px;
+  @media (width <= 600px) {
+    grid-template-columns: repeat(2, 0.5fr);
+    margin-left: 40px;
+  }
 `;
 
 export const Image = styled.img`
@@ -15,6 +19,10 @@ export const Image = styled.img`
   width: 250px;
   height: auto;
   z-index: 1;
+  @media (width <= 600px) {
+    width: 150px;
+    height: auto;
+  }
 `;
 
 const moveLeftRight = keyframes`
@@ -32,8 +40,11 @@ export const Eraser = styled.img`
   width: 200px;
   height: auto;
   z-index: 2;
-  &&:hover{
+  &&:hover {
     animation: ${moveLeftRight} 0.5s infinite;
+  }
+  @media (width <= 600px) {
+    display: none;
   }
 `;
 
@@ -45,40 +56,42 @@ export const Pencil = styled.img`
   height: 350px;
   z-index: 3;
   transform: rotate(-9deg);
-  &&:hover{
+  &&:hover {
     transform: rotate(-11deg);
     animation: ease;
   }
+  @media (width <= 600px) {
+    display: none;
+  }
 `;
 
-const handleFold = (position:number, angle: number = 45) => {
-  switch(position){
-    case 1: 
-      return `${angle}px 0 0 0` 
-    case 2:
-      return `0 ${angle}px 0 0`
-    case 3:
-      return `0 0 0 ${angle}px`
-    case 4:
-      return `0 0 ${angle}px 0`
-
-  }
-}
-const handleTape = (tape: number) =>{
-  switch(tape){
+const handleFold = (position: number, angle: number = 45) => {
+  switch (position) {
     case 1:
-      return "-15px"
+      return `${angle}px 0 0 0`;
     case 2:
-      return "30%"
+      return `0 ${angle}px 0 0`;
     case 3:
-      return "70%"
+      return `0 0 0 ${angle}px`;
+    case 4:
+      return `0 0 ${angle}px 0`;
   }
-}
-interface TapeProps{
-  tape: 1 | 2 | 3 
-  tapeColor?: string,
-  fold:  1 | 2 | 3 | 4
-  foldAngle: number
+};
+const handleTape = (tape: number) => {
+  switch (tape) {
+    case 1:
+      return "-15px";
+    case 2:
+      return "30%";
+    case 3:
+      return "70%";
+  }
+};
+interface TapeProps {
+  tape: 1 | 2 | 3;
+  tapeColor?: string;
+  fold: 1 | 2 | 3 | 4;
+  foldAngle: number;
 }
 export const Hint = styled.div`
   z-index: 2;
@@ -96,30 +109,46 @@ export const Hint = styled.div`
   user-select: none;
   color: black;
   animation: HintAnim 200ms ease;
+  @media (width <= 600px) {
+    padding: 5px 5px;
+    font-size: 10px;
+    text-align: center;
+    min-width: 80px;
+  }
 `;
 export const ImageContainer = styled.div<TapeProps>`
   box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.75);
   background-color: whitesmoke;
-  border-radius: ${(p:TapeProps) => handleFold(p.fold, p.foldAngle)};
+  border-radius: ${(p: TapeProps) => handleFold(p.fold, p.foldAngle)};
   position: relative; // Add this line
   padding-bottom: 5px;
-
+  @media (width <= 600px) {
+    width: 120px;
+    height: auto;
+  }
   &::before {
-    content: '';
+    content: "";
     position: absolute;
-    left: ${p => handleTape(p.tape)};
+    left: ${(p) => handleTape(p.tape)};
     opacity: 0.5;
-    border-top: 50px solid ${p=>p.tapeColor || "red"};
-    border-right: 100px solid ${p=>p.tapeColor || "red"};
-    transform: ${p => p.tape === 3 ? `rotate(55deg)` : `rotate(-55deg)`};
+    border-top: 50px solid ${(p) => p.tapeColor || "red"};
+    border-right: 100px solid ${(p) => p.tapeColor || "red"};
+    transform: ${(p) => (p.tape === 3 ? `rotate(55deg)` : `rotate(-55deg)`)};
     clip-path: polygon(0% 0%, 100% 0%, 90% 100%, 10% 100%);
+    @media (width <= 600px) {
+      border-top: 25px solid ${(p) => p.tapeColor || "red"};
+      border-right: 50px solid ${(p) => p.tapeColor || "red"};
+    }
   }
   h1 {
     font-family: ${Fonts.HomemadeApple}, cursive;
     font-size: 35px;
     font-weight: bolder;
-    padding-bottom:8px;
-    color: #000f55
+    padding-bottom: 8px;
+    color: #000f55;
+    @media (width <= 600px) {
+      font-size: 15px;
+    }
   }
   &:hover {
     ${Hint} {
@@ -145,4 +174,7 @@ export const Handwrite = styled.h1`
   z-index: 1;
   transform: rotate(-45deg);
   user-select: none;
-`
+  @media (width <= 600px) {
+    display: none;
+  }
+`;

@@ -21,7 +21,6 @@ export const StickerOptions = styled.p`
   filter: drop-shadow(0 0 5px #777);
   position: relative;
   z-index: 1;
-
   &:before {
     content: attr(data-stroke);
     position: absolute;
@@ -31,6 +30,10 @@ export const StickerOptions = styled.p`
     -webkit-text-stroke: 10px #f0ffff;
     z-index: -1;
     text-shadow: none;
+  }
+  @media (width <= 600px) {
+    font-size: clamp(25px, 0.22rem, 25px);
+    line-height: 25px;
   }
 `;
 export const StickerText = styled.p`
@@ -52,5 +55,9 @@ export const StickerText = styled.p`
     -webkit-text-stroke: 10px #f0ffff;
     z-index: -1;
     text-shadow: none;
+  }
+  @media (width <= 600px) {
+    font-size: clamp(30px, 0.22rem, 30px);
+    line-height: 25px;
   }
 `;
