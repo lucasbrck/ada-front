@@ -49,7 +49,7 @@ export const About: React.FC = () => {
             de um novo produto pedagógico, o portal da Ada. No entanto, o portal
             não tem apenas uma intenção pedagógica, mas também busca divulgar e
             socializar os materiais e as diferentes histórias da Ada, que
-            esploram distintas situações do cotidiano, como: política,
+            exploram distintas situações do cotidiano, como: política,
             brincadeiras, educação, humor, entre outros.{" "}
           </S.Content>
         </S.ContentContainer>
