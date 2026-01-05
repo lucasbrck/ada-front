@@ -65,7 +65,7 @@ export const ContentContainer = styled.div`
     }
   }
 `;
-export const Content = styled.text`
+export const Content = styled.p`
   font-family: ${Fonts.GilroySemiBold}, cursive;
   color: #000f55;
   font-size: 20px;

@@ -1,5 +1,5 @@
 {
-  "name": "ada-tront",
+  "name": "ada-front",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,9 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@material-ui/core": "^4.12.4",
-    "@types/material-ui": "^0.21.13",
-    "material-ui": "^0.20.2",
+    "@emotion/react": "^11.13.0",
+    "@emotion/styled": "^11.13.0",
+    "@mui/material": "^5.15.22",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-multi-carousel": "^2.8.4",

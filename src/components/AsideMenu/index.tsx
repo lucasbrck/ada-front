@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import * as S from "./styles";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -7,20 +7,25 @@ const AsideMenu = () => {
   const location = useLocation();
   const [active, setActive] = useState(false);
 
-  const handleClick = (e: React.MouseEvent<HTMLElement>) => {
-    console.log(e);
+  const navItems = useMemo(
+    () => [
+      { label: "Personagens", path: "/Personagens" },
+      { label: "Tiras", path: "/Tiras" },
+      { label: "Sobre", path: "/Sobre" },
+    ],
+    []
+  );
+
+  const handleNavigate = (path: string) => {
     setActive(false);
-    const direction = e?.currentTarget.innerText;
-    navigate(`/${direction?.replaceAll(" ", "")}`);
+    navigate(path);
   };
   const goToHome = () => {
     setActive(false);
     navigate("/");
   };
 
-  const activeTab = (path: string) => {
-    return path === location.pathname.replace("/", "");
-  };
+  const isActive = (path: string) => path === location.pathname;
 
   return (
     <S.MenuContainer>
@@ -33,26 +38,14 @@ const AsideMenu = () => {
         />
       </S.Header>
       <S.Container active={active}>
-        <S.StyledOptions
-          active={activeTab("Personagens")}
-          handleClick={handleClick}
-          textData="Personagens"
-        />
-        <S.StyledOptions
-          active={activeTab("Tiras")}
-          handleClick={handleClick}
-          textData="Tiras"
-        />
-        <S.StyledOptions
-          active={activeTab("Sobre")}
-          handleClick={handleClick}
-          textData="Sobre"
-        />
-        <S.StyledOptions
-          active={activeTab("Jogos")}
-          handleClick={handleClick}
-          textData="Jogos"
-        />
+        {navItems.map(({ label, path }) => (
+          <S.StyledOptions
+            key={path}
+            active={isActive(path)}
+            handleClick={() => handleNavigate(path)}
+            textData={label}
+          />
+        ))}
       </S.Container>
     </S.MenuContainer>
   );

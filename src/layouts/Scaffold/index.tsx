@@ -2,16 +2,15 @@ import React, { useEffect, useState } from "react";
 import * as S from "./styles";
 import * as I from "assets/images/personagens";
 
-interface Props extends React.PropsWithChildren<{}> {}
-
-const Scaffold: React.FC<Props> = ({ children }) => {
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 600);
+const Scaffold: React.FC<React.PropsWithChildren> = ({ children }) => {
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 600);
     };
 
+    handleResize();
     window.addEventListener("resize", handleResize);
 
     // Cleanup the event listener on component unmount

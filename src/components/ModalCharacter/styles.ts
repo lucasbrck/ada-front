@@ -26,9 +26,10 @@ export const Grid = styled.div`
   grid-template-rows: 50px 1fr;
   grid-column-gap: 0px;
   grid-row-gap: 0px;
+  padding: 2em;
 `;
 
 export const Img = styled.img`
   grid-area: 1 / 1 / 3 / 2;
-  width:  250px;
-`
+  width: 250px;
+`;
