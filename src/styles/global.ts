@@ -8,7 +8,7 @@ import Fredoka from "assets/fonts/Fredoka.otf";
 import Rancho from "assets/fonts/Rancho-Regular.ttf";
 import Marker from "assets/fonts/PermanentMarker-Regular.ttf";
 import HomemadeApple from "assets/fonts/HomemadeApple-Regular.ttf";
-import { Fonts, ColorScheme, getScrollbarStyle } from "./constants.ts";
+import { Fonts, ColorScheme, getScrollbarStyle } from "./constants";
 
 const general = css`
   * {

@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Paper } from "@material-ui/core";
+import { Modal, Paper } from "@mui/material";
 import * as S from "./styles";
 
 interface ModalCharactersProps {
@@ -27,9 +27,9 @@ const ModalCharacters: React.FC<ModalCharactersProps> = ({
         justifyContent: "center",
       }}
     >
-      <Paper style={{ padding: "2em" }}>
+      <Paper>
         <S.Grid>
-          <S.Img src={imgSrc} alt="Modal" style={{ width: "250px" }} />
+          <S.Img src={imgSrc} alt={`Ilustração de ${title}`} />
 
           <S.Title>{title}</S.Title>
 

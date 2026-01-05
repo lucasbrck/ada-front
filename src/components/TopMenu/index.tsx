@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import * as S from "./styles";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -6,42 +6,30 @@ const TopMenu = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const handleClick = (e: React.MouseEvent<HTMLElement>) => {
-    console.log(e);
-    const direction = e?.currentTarget.innerText;
-    navigate(`/${direction?.replaceAll(" ", "")}`);
-  };
-  const goToHome = () => {
-    navigate("/");
-  };
+  const navItems = useMemo(
+    () => [
+      { label: "Personagens", path: "/Personagens" },
+      { label: "Tiras", path: "/Tiras" },
+      { label: "Sobre", path: "/Sobre" },
+    ],
+    []
+  );
 
-  const activeTab = (path: string) => {
-    return path === location.pathname.replace("/","")
-  };
+  const handleNavigate = (path: string) => navigate(path);
+
+  const isActive = (path: string) => path === location.pathname;
 
   return (
     <S.Container>
-      <S.StyledSticker handleClick={goToHome} textData="Tirinhas da Ada" />
-      <S.StyledOptions
-        active={activeTab("Personagens")}
-        handleClick={handleClick}
-        textData="Personagens"
-      />
-      <S.StyledOptions
-        active={activeTab("Tiras")}
-        handleClick={handleClick}
-        textData="Tiras"
-      />
-      <S.StyledOptions
-        active={activeTab("Sobre")}
-        handleClick={handleClick}
-        textData="Sobre"
-      />
-      <S.StyledOptions
-        active={activeTab("Jogos")}
-        handleClick={handleClick}
-        textData="Jogos"
-      />
+      <S.StyledSticker handleClick={() => handleNavigate("/")} textData="Tirinhas da Ada" />
+      {navItems.map(({ label, path }) => (
+        <S.StyledOptions
+          key={path}
+          active={isActive(path)}
+          handleClick={() => handleNavigate(path)}
+          textData={label}
+        />
+      ))}
     </S.Container>
   );
 };

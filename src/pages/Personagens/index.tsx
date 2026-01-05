@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import * as I from "assets/images/personagens";
 import Pencil from "assets/images/lapisAda.png";
 import Eraser from "assets/images/eraserCaramelo.png";
@@ -34,10 +34,13 @@ const Personagens: React.FC = () => {
     info: "Exemplo",
   });
 
-  const handleModal = (character: InfoChars) => {
-    setModalOpen(!modalOpen);
-    setSelectedCharacter(character);
-  };
+  const handleModal = useCallback(
+    (character: InfoChars) => {
+      setModalOpen((prev) => !prev);
+      setSelectedCharacter(character);
+    },
+    []
+  );
 
   const handleCloseModal = () => {
     setModalOpen(false);
@@ -57,10 +60,10 @@ const Personagens: React.FC = () => {
       kauaneIndex,
       0,
       <>
-        <div>
+        <div key="handwrite">
           <S.Handwrite>Personagens</S.Handwrite>
         </div>
-        <div>
+        <div key="ornaments">
           <S.Eraser src={Eraser} />
           <S.Pencil src={Pencil} />
         </div>
@@ -68,7 +71,7 @@ const Personagens: React.FC = () => {
     );
 
     return newArray;
-  }, [infoChars,handleModal]);
+  }, [handleModal]);
 
   return (
     <S.Container>

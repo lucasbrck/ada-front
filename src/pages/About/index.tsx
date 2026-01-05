@@ -24,10 +24,10 @@ export const About: React.FC = () => {
               Escher.{" "}
             </S.Content>
           </S.ContentContainer>
-          <S.Image src={Ada} />
+          <S.Image src={Ada} alt="Ilustração da Ada" />
         </S.TextsContainer>
         <S.TextsContainer>
-          <S.Image src={Almanaque} />
+          <S.Image src={Almanaque} alt="Almanaque da Ada" />
 
           <S.ContentContainer>
             <S.Title>O Almanaque!</S.Title>
@@ -67,7 +67,7 @@ export const About: React.FC = () => {
               graduação de Ciências da Computação na Universidade Federal de São
               João del-Rei, que possui uma empresa de design gráfico.
             </S.Content>
-            <a href="https://www.instagram.com/davibatnas/" target="_blank">
+            <a href="https://www.instagram.com/davibatnas/" target="_blank" rel="noreferrer">
               <img
                 height="32"
                 width="32"
@@ -75,7 +75,7 @@ export const About: React.FC = () => {
               />
             </a>
           </S.ContentContainer>
-          <S.Image src={Autora} />
+          <S.Image src={Autora} alt="Foto da autora Isabely Melo" />
         </S.TextsContainer>
       </S.Container>
     </>
