@@ -8,9 +8,9 @@ const TopMenu = () => {
 
   const navItems = useMemo(
     () => [
-      { label: "Personagens", path: "/Personagens" },
-      { label: "Tiras", path: "/Tiras" },
-      { label: "Sobre", path: "/Sobre" },
+      { label: "Personagens", path: "/personagens" },
+      { label: "Tiras", path: "/tiras" },
+      { label: "Sobre", path: "/sobre" },
     ],
     []
   );

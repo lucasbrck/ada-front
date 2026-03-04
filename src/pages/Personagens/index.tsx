@@ -52,7 +52,7 @@ const Personagens: React.FC = () => {
     ));
 
     const kauaneIndex = charactersArray.findIndex(
-      (character) => character.props.character.name === "Kauane"
+      (character) => character.props.character.name === "Margarete"
     );
 
     const newArray = [...charactersArray];
@@ -60,13 +60,10 @@ const Personagens: React.FC = () => {
       kauaneIndex,
       0,
       <>
-        <div key="handwrite">
-          <S.Handwrite>Personagens</S.Handwrite>
-        </div>
-        <div key="ornaments">
+        {/* <S.Ornaments key="ornaments">
           <S.Eraser src={Eraser} />
           <S.Pencil src={Pencil} />
-        </div>
+        </S.Ornaments> */}
       </>
     );
 

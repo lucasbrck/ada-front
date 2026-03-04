@@ -20,7 +20,7 @@ export const SAsideMenu = styled(AsideMenu)`
 `;
 
 export const Paper = styled.div`
-  width: 85vw;
+  width: 100vw;
   height: 100%;
   min-height: 100vh;
   position: relative;
@@ -58,35 +58,63 @@ export const StyledContainer = styled.div`
 const tiltAnimation = keyframes`
   0% {
     left: 0;
-    transform: rotateY(180deg);
+    transform: scaleX(-1);
   }
   49% {
-    transform: rotateY(180deg);
+    transform: scaleX(-1);
   }
   50% {
     left: 80%;
-    transform: rotateY(0deg);
+    transform: scaleX(1);
   }
   99% {
-    transform: rotateY(0deg);
+    transform: scaleX(1);
   }
   100% {
     left: 0;
-    transform: rotateY(180deg);
+    transform: scaleX(-1);
   }
- 
 `;
 
-export const TiltedImage = styled.img`
+const wagAnimation = keyframes`
+  0% {
+    transform: rotate(-4deg) translateY(0);
+  }
+  50% {
+    transform: rotate(6deg) translateY(-6px);
+  }
+  100% {
+    transform: rotate(-4deg) translateY(0);
+  }
+`;
+
+export const TiltedImage = styled.div`
   position: fixed;
   margin-left: 50px;
   bottom: 0;
   z-index: 2;
   width: 100px;
   animation: ${tiltAnimation} 10s linear infinite;
+  transition: filter 0.2s ease, transform 0.2s ease;
+
+  &:hover {
+    animation-play-state: paused;
+
+    img {
+      filter: drop-shadow(0 10px 12px rgba(0, 15, 85, 0.25));
+    }
+  }
+
   @media (width <= 600px) {
     width: 50px;
   }
+`;
+
+export const TiltedImageDog = styled.img`
+  width: 100%;
+  height: auto;
+  animation: ${wagAnimation} 0.6s ease-in-out infinite;
+  transition: filter 0.2s ease;
 `;
 
 export const PageContainer = styled.div``;

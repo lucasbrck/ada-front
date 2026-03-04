@@ -3,10 +3,12 @@ import styled, { css } from "styled-components";
 
 export const Container = styled.div`
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
+  grid-auto-flow: column;
+  grid-auto-columns: max-content;
+  justify-content: center;
+  align-items: center;
   padding: 15px;
-  column-gap: 35px;
-  margin-left: 80px;
+  gap: 35px;
 `;
 
 interface Props {

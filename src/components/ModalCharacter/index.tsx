@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Paper } from "@mui/material";
+import { Modal } from "@mui/material";
 import * as S from "./styles";
 
 interface ModalCharactersProps {
@@ -27,15 +27,22 @@ const ModalCharacters: React.FC<ModalCharactersProps> = ({
         justifyContent: "center",
       }}
     >
-      <Paper>
+      <S.ModalPaper elevation={0}>
         <S.Grid>
+          <S.CloseButton
+            type="button"
+            aria-label="Fechar modal"
+            onClick={handleClose}
+          >
+            Fechar
+          </S.CloseButton>
           <S.Img src={imgSrc} alt={`Ilustração de ${title}`} />
 
           <S.Title>{title}</S.Title>
 
           <S.Text>{text}</S.Text>
         </S.Grid>
-      </Paper>
+      </S.ModalPaper>
     </Modal>
   );
 };

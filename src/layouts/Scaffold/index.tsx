@@ -26,7 +26,9 @@ const Scaffold: React.FC<React.PropsWithChildren> = ({ children }) => {
           {isMobile ? <S.SAsideMenu /> : <S.STopMenu />}
           {children}
         </S.Lines>
-        <S.TiltedImage src={I.imgCaramelo} />
+        <S.TiltedImage>
+          <S.TiltedImageDog src={I.imgCaramelo} alt="Cachorro caramelo" />
+        </S.TiltedImage>
       </S.Paper>
     </S.StyledContainer>
   );

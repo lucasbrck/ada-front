@@ -7,9 +7,12 @@ const AppRoutes = () => {
     <Scaffold>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/Personagens" element={<Personagens />} />
-        <Route path="/Tiras" element={<Tirinhas />} />
-        <Route path="/Sobre" element={<About />} />
+        <Route path="/personagens" element={<Personagens />} />
+        <Route path="/tiras" element={<Tirinhas />} />
+        <Route path="/sobre" element={<About />} />
+        <Route path="/Personagens" element={<Navigate to="/personagens" replace />} />
+        <Route path="/Tiras" element={<Navigate to="/tiras" replace />} />
+        <Route path="/Sobre" element={<Navigate to="/sobre" replace />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Scaffold>

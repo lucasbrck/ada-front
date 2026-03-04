@@ -10,11 +10,14 @@ const Home: React.FC = () => {
         <S.Image src={AdaPresent} alt="Ada" />
       </S.ImgContainer>
       <S.InfoWrapper>
-        <S.Presentation>Bem-vindos ao portal da Ada!</S.Presentation>
-        {/* <S.Info>Nesse portal você conhecerá a Ada e seus amigos!</S.Info>
-        <S.Info>
-          Venha conhecer os personagens e aprender enquanto se diverte!
-        </S.Info> */}
+        <S.Tag>Portal da Ada</S.Tag>
+        <S.Presentation>
+          Bem-vindos ao portal da <S.Highlight>Ada</S.Highlight>!
+        </S.Presentation>
+        <S.Subtitle>
+          Tirinhas, personagens curiosos e descobertas para aprender
+          brincando.
+        </S.Subtitle>
       </S.InfoWrapper>
     </S.Container>
   );
