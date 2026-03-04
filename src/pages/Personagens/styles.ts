@@ -78,29 +78,6 @@ export const Pencil = styled.img`
   }
 `;
 
-const handleFold = (position: number, angle: number = 45) => {
-  switch (position) {
-    case 1:
-      return `${angle}px 0 0 0`;
-    case 2:
-      return `0 ${angle}px 0 0`;
-    case 3:
-      return `0 0 0 ${angle}px`;
-    case 4:
-      return `0 0 ${angle}px 0`;
-  }
-};
-const handleTape = (tape: number) => {
-  switch (tape) {
-    case 1:
-      return "-15px";
-    case 2:
-      return "30%";
-    case 3:
-      return "70%";
-  }
-};
-
 const handleTilt = (fold: number) => {
   switch (fold) {
     case 1:

@@ -1,7 +1,5 @@
 import React, { useCallback, useMemo, useState } from "react";
 import * as I from "assets/images/personagens";
-import Pencil from "assets/images/lapisAda.png";
-import Eraser from "assets/images/eraserCaramelo.png";
 import * as S from "./styles";
 import ModalCharacters from "components/ModalCharacter";
 import { InfoChars, infoChars } from "./data/info";

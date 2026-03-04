@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import * as S from "./styles";
 import { useNavigate, useLocation } from "react-router-dom";
 

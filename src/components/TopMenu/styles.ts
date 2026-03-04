@@ -11,10 +11,7 @@ export const Container = styled.div`
   gap: 35px;
 `;
 
-interface Props {
-  type: 'primary' | 'secondary'
-}
-export const StyledSticker = styled(StickerText)<Props>`
+export const StyledSticker = styled(StickerText)`
 `;
 
 interface OptionsProps {

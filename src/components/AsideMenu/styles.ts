@@ -24,10 +24,7 @@ width: 100%;
   justify-content: space-around;
   align-items: space-around;
 `;
-interface Props {
-  type: "primary" | "secondary";
-}
-export const StyledSticker = styled(StickerText)<Props>`
+export const StyledSticker = styled(StickerText)`
   justify-self: left;
 `;
 
