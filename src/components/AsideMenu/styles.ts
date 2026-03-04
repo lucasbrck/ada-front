@@ -1,47 +1,139 @@
 import StickerText, { StickerOptions } from "components/StickerText";
 import styled, { css } from "styled-components";
+import { Fonts } from "styles/constants";
 
 export const MenuContainer = styled.div`
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  padding: 16px 16px 10px 20px;
+  margin-bottom: 8px;
+`;
+
+export const Backdrop = styled.button<{ active: boolean }>`
+  position: fixed;
+  inset: 0;
+  border: none;
+  background: rgba(0, 15, 85, 0.18);
+  opacity: ${(p) => (p.active ? 1 : 0)};
+  pointer-events: ${(p) => (p.active ? "auto" : "none")};
+  transition: opacity 0.2s ease;
+  z-index: 1;
+`;
+
+export const Container = styled.div<{ active: boolean }>`
   display: flex;
   flex-direction: column;
-  margin-left: 20px;
-  justify-content: flex-end;
-  align-items: flex-end;
-  margin-bottom: 25px;
-`;
-export const Container = styled.div<{active:boolean}>`
-  display: ${p=>p.active? "flex" : "none"};
-  flex-direction: column;
-  background:white;
-  z-index:3;
-  padding:30px;
-  margin-left: 0;
+  gap: 12px;
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 16px;
+  min-width: min(280px, calc(100vw - 40px));
+  padding: 20px 18px 16px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 20px 30px rgba(0, 15, 85, 0.16);
+  border: 2px solid rgba(238, 111, 87, 0.18);
+  z-index: 2;
+  opacity: ${(p) => (p.active ? 1 : 0)};
+  transform: ${(p) => (p.active ? "translateY(0)" : "translateY(-10px)")};
+  pointer-events: ${(p) => (p.active ? "auto" : "none")};
+  transition: opacity 0.2s ease, transform 0.2s ease;
 `;
 
 export const Header = styled.div`
-width: 100%;
+  width: 100%;
   display: flex;
-  justify-content: space-around;
-  align-items: space-around;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 14px 24px rgba(0, 15, 85, 0.12);
+  border: 1px solid rgba(238, 111, 87, 0.14);
+  backdrop-filter: blur(8px);
+  position: relative;
+  z-index: 2;
 `;
+
 export const StyledSticker = styled(StickerText)`
   justify-self: left;
+  max-width: calc(100% - 96px);
+  flex: 1;
+  min-width: 0;
+
+  @media (width <= 600px) {
+    font-size: clamp(22px, 6vw, 28px);
+    line-height: 1;
+    white-space: nowrap;
+
+    &::before {
+      white-space: nowrap;
+    }
+  }
+`;
+
+export const MenuButton = styled.button`
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border: none;
+  background: rgba(240, 255, 255, 0.95);
+  border-radius: 999px;
+  padding: 10px 12px;
+  cursor: pointer;
+  box-shadow: 0 8px 18px rgba(0, 15, 85, 0.12);
+`;
+
+export const MenuLabel = styled.span`
+  font-family: ${Fonts.Marker}, cursive;
+  font-size: 20px;
+  line-height: 1;
+  color: #000f55;
 `;
 
 interface OptionsProps {
   active: boolean;
 }
 
-export const Menu = styled.img`
-  width: 35px;
-  height: 35px;
-  background-color: white;
-  z-index: 3;
+export const MenuIcon = styled.span<{ active: boolean }>`
+  position: relative;
+  display: inline-flex;
+  width: 24px;
+  height: 18px;
+
+  span {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    border-radius: 999px;
+    background: #ff0800;
+    transition: transform 0.2s ease, opacity 0.2s ease, top 0.2s ease;
+  }
+
+  span:nth-child(1) {
+    top: ${(p) => (p.active ? "7px" : "0")};
+    transform: ${(p) => (p.active ? "rotate(45deg)" : "none")};
+  }
+
+  span:nth-child(2) {
+    top: 7px;
+    opacity: ${(p) => (p.active ? 0 : 1)};
+  }
+
+  span:nth-child(3) {
+    top: ${(p) => (p.active ? "7px" : "14px")};
+    transform: ${(p) => (p.active ? "rotate(-45deg)" : "none")};
+  }
 `;
+
 export const StyledOptions = styled(StickerOptions)<OptionsProps>`
-  margin-bottom: 5px;
+  margin-bottom: 2px;
   justify-self: left;
   width: fit-content;
+  line-height: 1;
   ${(p) =>
     p.active &&
     css`

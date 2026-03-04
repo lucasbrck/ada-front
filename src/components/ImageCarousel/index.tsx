@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { Fonts } from "styles/constants";
 
@@ -60,21 +60,33 @@ const Viewport = styled.div`
   }
 `;
 
-const Frame = styled.div`
+const Frame = styled.div<{ $isZoomed: boolean }>`
   width: 100%;
   border-radius: 18px;
   background: #fff;
   padding: 10px;
   box-shadow: 0 14px 30px rgba(19, 32, 68, 0.16);
   overflow: hidden;
+
+  @media (width <= 600px) {
+    overflow: ${(p) => (p.$isZoomed ? "auto" : "hidden")};
+    padding: 8px;
+    -webkit-overflow-scrolling: touch;
+  }
 `;
 
-const Image = styled.img`
-  width: 100%;
+const Image = styled.img<{ $isMobile: boolean; $isZoomed: boolean }>`
+  width: ${(p) => (p.$isMobile && p.$isZoomed ? "160%" : "100%")};
   max-height: min(70vh, 560px);
   object-fit: contain;
   border-radius: 14px;
   animation: ${imageReveal} 320ms ease;
+  cursor: ${(p) => (p.$isMobile ? (p.$isZoomed ? "zoom-out" : "zoom-in") : "default")};
+
+  @media (width <= 600px) {
+    max-height: none;
+    min-width: ${(p) => (p.$isZoomed ? "160%" : "100%")};
+  }
 `;
 
 const Controls = styled.div`
@@ -135,6 +147,15 @@ const Dots = styled.div`
   gap: 8px;
   justify-content: center;
   align-items: center;
+
+  @media (width <= 600px) {
+    width: 100%;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding: 2px 2px 8px;
+    -webkit-overflow-scrolling: touch;
+  }
 `;
 
 const DotButton = styled.button<{ active: boolean }>`
@@ -150,6 +171,10 @@ const DotButton = styled.button<{ active: boolean }>`
   &:hover {
     transform: scale(1.1);
   }
+
+  @media (width <= 600px) {
+    flex-shrink: 0;
+  }
 `;
 
 const Counter = styled.div`
@@ -161,18 +186,49 @@ const Counter = styled.div`
   opacity: 0.8;
 `;
 
+const MobileHint = styled.p`
+  margin-top: 12px;
+  text-align: center;
+  font-family: ${Fonts.Marker}, cursive;
+  font-size: 16px;
+  color: rgba(0, 15, 85, 0.82);
+
+  @media (min-width: 601px) {
+    display: none;
+  }
+`;
+
 const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isZoomed, setIsZoomed] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const mobileViewport = window.innerWidth <= 600;
+
+      setIsMobile(mobileViewport);
+
+      if (!mobileViewport) {
+        setIsZoomed(false);
+      }
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const toggleZoom = () => {
-    window.innerWidth <= 600 ? setIsZoomed(!isZoomed) : setIsZoomed(false);
-  };
+    if (!isMobile) {
+      return;
+    }
 
-  const imageStyle = {
-    cursor: "pointer",
-    transition: "transform 0.3s ease-in-out",
-    transform: `scale(${isZoomed ? 1.12 : 1})`,
+    setIsZoomed((current) => !current);
   };
 
   const changeImage = (direction: number) => {
@@ -184,17 +240,47 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
       newIndex = 0;
     }
 
+    setIsZoomed(false);
     setCurrentIndex(newIndex);
+  };
+
+  const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
+    if (isZoomed) {
+      return;
+    }
+
+    setTouchStartX(event.touches[0]?.clientX ?? null);
+  };
+
+  const handleTouchEnd = (event: React.TouchEvent<HTMLDivElement>) => {
+    if (touchStartX === null || isZoomed) {
+      setTouchStartX(null);
+      return;
+    }
+
+    const touchEndX = event.changedTouches[0]?.clientX ?? touchStartX;
+    const swipeDistance = touchEndX - touchStartX;
+
+    if (Math.abs(swipeDistance) > 45) {
+      changeImage(swipeDistance > 0 ? -1 : 1);
+    }
+
+    setTouchStartX(null);
   };
 
   return (
     <CarouselShell>
       <Viewport>
-        <Frame>
+        <Frame
+          $isZoomed={isZoomed}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
           <Image
             key={currentIndex}
             onClick={toggleZoom}
-            style={imageStyle}
+            $isMobile={isMobile}
+            $isZoomed={isZoomed}
             src={`${images[currentIndex].image}`}
             alt={`Tirinha ${currentIndex + 1}`}
             loading="lazy"
@@ -216,7 +302,10 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
               key={`dot-${index}`}
               type="button"
               active={index === currentIndex}
-              onClick={() => setCurrentIndex(index)}
+              onClick={() => {
+                setIsZoomed(false);
+                setCurrentIndex(index);
+              }}
               aria-label={`Ir para tirinha ${index + 1}`}
             />
           ))}
@@ -233,6 +322,9 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
       <Counter>
         {currentIndex + 1} / {images.length}
       </Counter>
+      <MobileHint>
+        Toque para ampliar e arraste para trocar de tirinha.
+      </MobileHint>
     </CarouselShell>
   );
 };
