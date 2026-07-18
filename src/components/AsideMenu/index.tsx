@@ -12,6 +12,7 @@ const AsideMenu = () => {
     () => [
       { label: "Personagens", path: "/personagens" },
       { label: "Tiras", path: "/tiras" },
+      { label: "Jogos", path: "/jogos" },
       { label: "Sobre", path: "/sobre" },
     ],
     []
@@ -59,7 +60,10 @@ const AsideMenu = () => {
         onClick={() => setActive(false)}
       />
       <S.Header>
-        <S.StyledSticker handleClick={goToHome} textData="Tirinhas da Ada" />
+        <S.Brand type="button" onClick={goToHome} aria-label="Ir para a página inicial">
+          <span>Tirinhas da Ada</span>
+          <small>descobertas em quadrinhos</small>
+        </S.Brand>
         <S.MenuButton
           type="button"
           onClick={() => setActive((current) => !current)}
@@ -75,14 +79,16 @@ const AsideMenu = () => {
           </S.MenuIcon>
         </S.MenuButton>
       </S.Header>
-      <S.Container id={menuId} active={active}>
+      <S.Container id={menuId} active={active} aria-label="Navegação principal">
         {navItems.map(({ label, path }) => (
-          <S.StyledOptions
+          <S.NavButton
+            type="button"
             key={path}
             active={isActive(path)}
-            handleClick={() => handleNavigate(path)}
-            textData={label}
-          />
+            onClick={() => handleNavigate(path)}
+          >
+            {label}
+          </S.NavButton>
         ))}
       </S.Container>
     </S.MenuContainer>

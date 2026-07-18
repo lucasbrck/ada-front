@@ -3,21 +3,58 @@ import { Colors, Fonts } from "styles/constants";
 
 export const Container = styled.div`
   position: relative;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: clamp(18px, 3vw, 32px);
-  padding: 70px 40px 80px 90px;
+  width: min(1180px, calc(100% - 48px));
   margin: 0 auto;
-  max-width: 1200px;
-  align-items: start;
+  padding: clamp(36px, 5vw, 64px) 0 72px;
 
   @media (width <= 900px) {
-    padding: 60px 24px 60px 70px;
+    width: min(100% - 40px, 760px);
   }
 
   @media (width <= 600px) {
-    grid-template-columns: repeat(2, minmax(140px, 1fr));
-    padding: 50px 18px 50px 40px;
+    width: min(100% - 32px, 540px);
+  }
+`;
+
+export const PageHeader = styled.header`
+  display: grid;
+  gap: 12px;
+  max-width: 720px;
+  margin-bottom: 38px;
+`;
+
+export const Eyebrow = styled.span`
+  color: #b63f35;
+  font-family: ${Fonts.GilroyBold}, sans-serif;
+  font-size: 13px;
+  text-transform: uppercase;
+`;
+
+export const PageTitle = styled.h1`
+  color: #142b47;
+  font-family: ${Fonts.Fredoka}, sans-serif;
+  font-size: clamp(34px, 4vw, 54px);
+  line-height: 1.08;
+`;
+
+export const PageIntro = styled.p`
+  color: #43596b;
+  font-family: ${Fonts.GilroyMedium}, sans-serif;
+  font-size: 19px;
+`;
+
+export const CharacterGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px 18px;
+
+  @media (width <= 900px) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  @media (width <= 600px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 12px;
   }
 `;
 
@@ -27,18 +64,22 @@ export const Image = styled.img`
   width: min(240px, 80%);
   height: auto;
   z-index: 1;
-  filter:
-    drop-shadow(2px 0 0 #f0ffff)
-    drop-shadow(-2px 0 0 #f0ffff)
-    drop-shadow(0 2px 0 #f0ffff)
-    drop-shadow(0 -2px 0 #f0ffff)
-    drop-shadow(0 0 10px rgba(120, 120, 120, 0.28))
-    drop-shadow(0 0 14px rgba(120, 120, 120, 0.22));
-  transition: transform 0.2s ease, filter 0.2s ease;
+  filter: drop-shadow(0 8px 8px rgba(23, 54, 76, 0.2));
+  will-change: transform;
+  backface-visibility: hidden;
+  transition: transform 160ms ease-out;
   @media (width <= 600px) {
     width: 150px;
     height: auto;
   }
+`;
+
+export const ImagePlaceholder = styled.div`
+  width: min(240px, 80%);
+  aspect-ratio: 0.72;
+  align-self: center;
+  background: rgba(203, 231, 235, 0.55);
+  border: 1px dashed #9ab7c2;
 `;
 
 const moveLeftRight = keyframes`
@@ -92,47 +133,74 @@ const handleTilt = (fold: number) => {
       return "0deg";
   }
 };
-interface TapeProps {
-  tape: 1 | 2 | 3;
-  tapeColor?: string;
+interface CardProps {
   fold: 1 | 2 | 3 | 4;
-  foldAngle: number;
 }
 export const Hint = styled.div`
   z-index: 2;
   position: absolute;
-  padding: 15px 15px;
+  top: -6px;
+  left: 62%;
+  padding: 12px 14px;
   background-color: ${Colors.White};
-  border-radius: 55px 55px 55px 0px;
-  border: solid 3px #ff0800;
-  box-shadow: 0 0 0 6px #f0ffff, 0 12px 18px rgba(0, 15, 85, 0.18);
-  left: 80%;
+  border: solid 2px #df493c;
+  border-radius: 6px;
+  box-shadow: 4px 4px 0 #f7c948;
   font-family: ${Fonts.Marker};
-  font-size: 15px;
-  text-align: center;
-  min-width: 150px;
+  font-size: 14px;
+  line-height: 1.3;
+  text-align: left;
+  min-width: 170px;
+  max-width: 220px;
   user-select: none;
   color: #000f55;
   opacity: 0;
   transform: translateY(10px) scale(0.96);
   pointer-events: none;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transition: opacity 160ms ease-out, transform 160ms ease-out;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    left: 20px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+  }
+
+  &::before {
+    bottom: -15px;
+    border-width: 15px 13px 0 0;
+    border-color: #df493c transparent transparent transparent;
+  }
+
+  &::after {
+    bottom: -11px;
+    left: 22px;
+    border-width: 12px 10px 0 0;
+    border-color: ${Colors.White} transparent transparent transparent;
+  }
+
   @media (width <= 600px) {
-    padding: 5px 5px;
-    font-size: 10px;
-    text-align: center;
-    min-width: 80px;
+    top: -10px;
+    left: 45%;
+    padding: 8px 9px;
+    font-size: 11px;
+    min-width: 105px;
+    max-width: 140px;
   }
 `;
-export const ImageContainer = styled.div<TapeProps>`
+export const ImageContainer = styled.button<CardProps>`
   position: relative;
   padding: 6px 0 12px;
   display: grid;
   justify-items: center;
   row-gap: 6px;
-  cursor: pointer;
+  color: inherit;
   transform: rotate(${(p) => handleTilt(p.fold)});
-  transition: transform 0.2s ease;
+  will-change: transform;
+  transition: transform 160ms ease-out;
   @media (width <= 600px) {
     width: 120px;
     height: auto;
@@ -141,51 +209,56 @@ export const ImageContainer = styled.div<TapeProps>`
     content: "";
     display: none;
   }
-  h1 {
-    font-family: ${Fonts.HomemadeApple}, cursive;
-    font-size: 35px;
-    font-weight: bolder;
-    padding-bottom: 8px;
-    color: #000f55;
-    margin: 0;
-    text-align: center;
-    position: relative;
-    display: inline-block;
-
-    &::after {
-      content: "";
-      position: absolute;
-      left: -6px;
-      right: -6px;
-      bottom: 6px;
-      height: 10px;
-      background: rgba(255, 8, 0, 0.2);
-      z-index: -1;
-      transform: skew(-8deg);
-      border-radius: 999px;
-    }
-    @media (width <= 600px) {
-      font-size: 15px;
-    }
-  }
   &:hover {
     transform: rotate(0deg) translateY(-8px);
 
     ${Image} {
-      transform: scale(1.02);
-      filter:
-        drop-shadow(2px 0 0 #f0ffff)
-        drop-shadow(-2px 0 0 #f0ffff)
-        drop-shadow(0 2px 0 #f0ffff)
-        drop-shadow(0 -2px 0 #f0ffff)
-        drop-shadow(0 0 14px rgba(120, 120, 120, 0.3))
-        drop-shadow(0 0 18px rgba(120, 120, 120, 0.26));
+      transform: scale(1.035);
     }
 
     ${Hint} {
       opacity: 1;
       transform: translateY(0) scale(1);
     }
+  }
+
+  &:focus-visible {
+    outline: 3px solid #1ab1f3;
+    outline-offset: 4px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &,
+    ${Image},
+    ${Hint} {
+      transition: none;
+    }
+  }
+`;
+
+export const Name = styled.h2`
+  position: relative;
+  display: inline-block;
+  margin: 0;
+  padding-bottom: 5px;
+  color: #142b47;
+  font-family: ${Fonts.Fredoka}, sans-serif;
+  font-size: 24px;
+  line-height: 1;
+
+  &::after {
+    content: "";
+    position: absolute;
+    right: -3px;
+    bottom: 0;
+    left: -3px;
+    height: 5px;
+    background: rgba(247, 201, 72, 0.7);
+    z-index: -1;
+  }
+
+  @media (width <= 600px) {
+    font-size: 19px;
   }
 `;
 

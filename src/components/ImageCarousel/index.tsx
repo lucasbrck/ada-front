@@ -3,7 +3,7 @@ import styled, { keyframes } from "styled-components";
 import { Fonts } from "styles/constants";
 
 interface ImageCarouselProps {
-  images: { image: string }[];
+  images: { load: () => Promise<string> }[];
 }
 
 const imageReveal = keyframes`
@@ -18,19 +18,18 @@ const imageReveal = keyframes`
 `;
 
 const CarouselShell = styled.section`
-  --carousel-ink: #000f55;
-  --carousel-accent: #ff0800;
-  --carousel-paper: #ffffffff;
-  --carousel-sky: #c43333ff;
-  --carousel-border: rgba(255, 8, 0, 0.18);
+  --carousel-ink: #142b47;
+  --carousel-accent: #df493c;
+  --carousel-paper: #fffef9;
+  --carousel-border: #b6ccd2;
 
-  width: min(980px, 92vw);
-  margin: 16px auto 32px;
-  padding: 26px 28px 22px;
-  border-radius: 26px;
-  border: 2px solid var(--carousel-border);
+  width: min(980px, 100%);
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 6px;
+  border: 1px solid var(--carousel-border);
   background: var(--carousel-paper);
-  box-shadow: 0 18px 36px rgba(19, 32, 68, 0.16);
+  box-shadow: 6px 6px 0 #d8edf0;
   position: relative;
   overflow: hidden;
 
@@ -40,32 +39,29 @@ const CarouselShell = styled.section`
   }
 
   @media (width <= 600px) {
-    padding: 18px 16px;
-    border-radius: 18px;
+    padding: 12px;
   }
 `;
 
 const Viewport = styled.div`
   position: relative;
-  padding: 22px;
-  border-radius: 22px;
-  background: rgba(255, 255, 255, 0.75);
-  border: 2px dashed rgba(255, 8, 0, 0.25);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.8);
+  padding: 12px;
+  background: #eaf5f6;
+  border: 1px dashed #8eb8c0;
   display: grid;
   place-items: center;
 
   @media (width <= 600px) {
-    padding: 12px;
+    padding: 8px;
   }
 `;
 
 const Frame = styled.div<{ $isZoomed: boolean }>`
   width: 100%;
-  border-radius: 18px;
+  border-radius: 3px;
   background: #fff;
-  padding: 10px;
-  box-shadow: 0 14px 30px rgba(19, 32, 68, 0.16);
+  padding: 6px;
+  border: 1px solid #d5e3e5;
   overflow: hidden;
 
   @media (width <= 600px) {
@@ -79,7 +75,7 @@ const Image = styled.img<{ $isMobile: boolean; $isZoomed: boolean }>`
   width: ${(p) => (p.$isMobile && p.$isZoomed ? "160%" : "100%")};
   max-height: min(70vh, 560px);
   object-fit: contain;
-  border-radius: 14px;
+  border-radius: 1px;
   animation: ${imageReveal} 320ms ease;
   cursor: ${(p) => (p.$isMobile ? (p.$isZoomed ? "zoom-out" : "zoom-in") : "default")};
 
@@ -87,6 +83,15 @@ const Image = styled.img<{ $isMobile: boolean; $isZoomed: boolean }>`
     max-height: none;
     min-width: ${(p) => (p.$isZoomed ? "160%" : "100%")};
   }
+`;
+
+const ImageLoading = styled.div`
+  display: grid;
+  width: 100%;
+  aspect-ratio: 3 / 1;
+  place-items: center;
+  color: rgba(0, 15, 85, 0.68);
+  font-family: ${Fonts.GilroySemiBold}, sans-serif;
 `;
 
 const Controls = styled.div`
@@ -107,28 +112,26 @@ const NavButton = styled.button`
   align-items: center;
   gap: 12px;
   padding: 10px 18px;
-  border-radius: 999px;
-  border: 2px solid var(--carousel-border);
-  background: linear-gradient(135deg, #fff, #ffffffff);
+  border-radius: 5px;
+  border: 1px solid var(--carousel-border);
+  background: #fff;
   color: var(--carousel-ink);
-  font-family: ${Fonts.Marker}, cursive;
-  font-size: 28px;
+  font-family: ${Fonts.GilroyBold}, sans-serif;
+  font-size: 16px;
   cursor: pointer;
-  box-shadow: 0 10px 20px rgba(19, 32, 68, 0.16);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 160ms ease, background-color 160ms ease;
 
   &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 14px 24px rgba(19, 32, 68, 0.18);
+    transform: translateY(-2px);
+    background: #fde4dd;
   }
 
   &:active {
     transform: translateY(0);
-    box-shadow: 0 8px 16px rgba(19, 32, 68, 0.14);
   }
 
   @media (width <= 600px) {
-    font-size: 20px;
+    font-size: 16px;
     padding: 8px 14px;
     width: 100%;
     justify-content: center;
@@ -136,7 +139,7 @@ const NavButton = styled.button`
 `;
 
 const NavArrow = styled.span`
-  font-size: 34px;
+  font-size: 22px;
   line-height: 1;
   font-family: ${Fonts.Marker}, cursive;
 `;
@@ -180,8 +183,8 @@ const DotButton = styled.button<{ active: boolean }>`
 const Counter = styled.div`
   margin-top: 10px;
   text-align: center;
-  font-family: ${Fonts.Rancho}, cursive;
-  font-size: 20px;
+  font-family: ${Fonts.GilroySemiBold}, sans-serif;
+  font-size: 14px;
   color: var(--carousel-ink);
   opacity: 0.8;
 `;
@@ -189,8 +192,8 @@ const Counter = styled.div`
 const MobileHint = styled.p`
   margin-top: 12px;
   text-align: center;
-  font-family: ${Fonts.Marker}, cursive;
-  font-size: 16px;
+  font-family: ${Fonts.GilroyMedium}, sans-serif;
+  font-size: 14px;
   color: rgba(0, 15, 85, 0.82);
 
   @media (min-width: 601px) {
@@ -203,6 +206,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
   const [isZoomed, setIsZoomed] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
+  const [imageSource, setImageSource] = useState<string | null>(null);
 
   useEffect(() => {
     const handleResize = () => {
@@ -222,6 +226,24 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    setImageSource(null);
+
+    images[currentIndex].load().then((source) => {
+      if (!cancelled) {
+        setImageSource(source);
+      }
+    });
+
+    const nextIndex = (currentIndex + 1) % images.length;
+    void images[nextIndex].load();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [currentIndex, images]);
 
   const toggleZoom = () => {
     if (!isMobile) {
@@ -276,15 +298,19 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
-          <Image
-            key={currentIndex}
-            onClick={toggleZoom}
-            $isMobile={isMobile}
-            $isZoomed={isZoomed}
-            src={`${images[currentIndex].image}`}
-            alt={`Tirinha ${currentIndex + 1}`}
-            loading="lazy"
-          />
+          {imageSource ? (
+            <Image
+              key={currentIndex}
+              onClick={toggleZoom}
+              $isMobile={isMobile}
+              $isZoomed={isZoomed}
+              src={imageSource}
+              alt={`Tirinha ${currentIndex + 1}`}
+              decoding="async"
+            />
+          ) : (
+            <ImageLoading aria-live="polite">Carregando tirinha...</ImageLoading>
+          )}
         </Frame>
       </Viewport>
       <Controls>

@@ -5,7 +5,7 @@ import * as S from "./styles";
 interface ModalCharactersProps {
   open: boolean;
   handleClose: () => void;
-  imgSrc: string;
+  imgSrc: string | null;
   title: string;
   text: string;
 }
@@ -36,7 +36,11 @@ const ModalCharacters: React.FC<ModalCharactersProps> = ({
           >
             Fechar
           </S.CloseButton>
-          <S.Img src={imgSrc} alt={`Ilustração de ${title}`} />
+          {imgSrc ? (
+            <S.Img src={imgSrc} alt={`Ilustração de ${title}`} decoding="async" />
+          ) : (
+            <S.ImageLoading>Carregando personagem...</S.ImageLoading>
+          )}
 
           <S.Title>{title}</S.Title>
 

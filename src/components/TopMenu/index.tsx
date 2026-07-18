@@ -10,6 +10,7 @@ const TopMenu = () => {
     () => [
       { label: "Personagens", path: "/personagens" },
       { label: "Tiras", path: "/tiras" },
+      { label: "Jogos", path: "/jogos" },
       { label: "Sobre", path: "/sobre" },
     ],
     []
@@ -21,15 +22,17 @@ const TopMenu = () => {
 
   return (
     <S.Container>
-      <S.StyledSticker handleClick={() => handleNavigate("/")} textData="Tirinhas da Ada" />
-      {navItems.map(({ label, path }) => (
-        <S.StyledOptions
-          key={path}
-          active={isActive(path)}
-          handleClick={() => handleNavigate(path)}
-          textData={label}
-        />
-      ))}
+      <S.Brand onClick={() => handleNavigate("/")} aria-label="Ir para a página inicial">
+        <span>Tirinhas da Ada</span>
+        <small>descobertas em quadrinhos</small>
+      </S.Brand>
+      <S.Navigation aria-label="Navegação principal">
+        {navItems.map(({ label, path }) => (
+          <S.NavButton key={path} active={isActive(path)} onClick={() => handleNavigate(path)}>
+            {label}
+          </S.NavButton>
+        ))}
+      </S.Navigation>
     </S.Container>
   );
 };

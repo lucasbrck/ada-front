@@ -1,4 +1,3 @@
-import StickerText, { StickerOptions } from "components/StickerText";
 import styled, { css } from "styled-components";
 import { Fonts } from "styles/constants";
 
@@ -6,7 +5,7 @@ export const MenuContainer = styled.div`
   position: sticky;
   top: 0;
   z-index: 20;
-  padding: 16px 16px 10px 20px;
+  padding: 12px 16px 8px;
   margin-bottom: 8px;
 `;
 
@@ -24,16 +23,16 @@ export const Backdrop = styled.button<{ active: boolean }>`
 export const Container = styled.div<{ active: boolean }>`
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 2px;
   position: absolute;
   top: calc(100% + 10px);
   right: 16px;
   min-width: min(280px, calc(100vw - 40px));
-  padding: 20px 18px 16px;
-  border-radius: 22px;
-  background: rgba(255, 255, 255, 0.98);
-  box-shadow: 0 20px 30px rgba(0, 15, 85, 0.16);
-  border: 2px solid rgba(238, 111, 87, 0.18);
+  padding: 10px;
+  border-radius: 6px;
+  background: #fffef9;
+  box-shadow: 6px 6px 0 #d8edf0;
+  border: 1px solid #b6ccd2;
   z-index: 2;
   opacity: ${(p) => (p.active ? 1 : 0)};
   transform: ${(p) => (p.active ? "translateY(0)" : "translateY(-10px)")};
@@ -47,30 +46,30 @@ export const Header = styled.div`
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 14px 16px;
-  border-radius: 24px;
-  background: rgba(255, 255, 255, 0.94);
-  box-shadow: 0 14px 24px rgba(0, 15, 85, 0.12);
-  border: 1px solid rgba(238, 111, 87, 0.14);
-  backdrop-filter: blur(8px);
+  padding: 9px 4px 12px;
+  border-bottom: 1px solid rgba(61, 89, 105, 0.28);
   position: relative;
   z-index: 2;
 `;
 
-export const StyledSticker = styled(StickerText)`
-  justify-self: left;
-  max-width: calc(100% - 96px);
-  flex: 1;
+export const Brand = styled.button`
+  display: grid;
   min-width: 0;
+  gap: 1px;
+  color: #d7463a;
+  text-align: left;
 
-  @media (width <= 600px) {
-    font-size: clamp(22px, 6vw, 28px);
-    line-height: 1;
-    white-space: nowrap;
+  span {
+    font-family: ${Fonts.Rancho}, cursive;
+    font-size: 30px;
+    line-height: 0.9;
+  }
 
-    &::before {
-      white-space: nowrap;
-    }
+  small {
+    color: #43596b;
+    font-family: ${Fonts.GilroySemiBold}, sans-serif;
+    font-size: 9px;
+    text-transform: uppercase;
   }
 `;
 
@@ -79,16 +78,16 @@ export const MenuButton = styled.button`
   align-items: center;
   gap: 10px;
   border: none;
-  background: rgba(240, 255, 255, 0.95);
-  border-radius: 999px;
-  padding: 10px 12px;
+  background: #e8f4f5;
+  border: 1px solid #b6ccd2;
+  border-radius: 5px;
+  padding: 9px 10px;
   cursor: pointer;
-  box-shadow: 0 8px 18px rgba(0, 15, 85, 0.12);
 `;
 
 export const MenuLabel = styled.span`
-  font-family: ${Fonts.Marker}, cursive;
-  font-size: 20px;
+  font-family: ${Fonts.GilroyBold}, sans-serif;
+  font-size: 14px;
   line-height: 1;
   color: #000f55;
 `;
@@ -129,23 +128,31 @@ export const MenuIcon = styled.span<{ active: boolean }>`
   }
 `;
 
-export const StyledOptions = styled(StickerOptions)<OptionsProps>`
-  margin-bottom: 2px;
-  justify-self: left;
-  width: fit-content;
-  line-height: 1;
+export const NavButton = styled.button<OptionsProps>`
+  width: 100%;
+  min-height: 42px;
+  padding: 10px 12px;
+  color: #2f4b5b;
+  font-family: ${Fonts.GilroyBold}, sans-serif;
+  font-size: 16px;
+  text-align: left;
+  border-radius: 4px;
+
+  &:hover,
+  &:focus-visible {
+    color: #b63f35;
+    background: #fde4dd;
+  }
+
+  &:focus-visible {
+    outline: 2px solid #1ab1f3;
+    outline-offset: 2px;
+  }
+
   ${(p) =>
     p.active &&
     css`
-      &::after {
-        content: "";
-        width: 100%;
-        height: 100%;
-        display: block;
-        position: absolute;
-        top: -5px;
-        transform: skew(-12deg);
-        border-bottom: solid 8px rgba(238, 111, 87, 0.5);
-      }
+      color: #b63f35;
+      background: #fde4dd;
     `}
 `;

@@ -1,5 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
-import * as I from "assets/images/personagens";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import * as S from "./styles";
 import ModalCharacters from "components/ModalCharacter";
 import { InfoChars, infoChars } from "./data/info";
@@ -8,76 +7,81 @@ const Character: React.FC<{
   character: InfoChars;
   handleModal: (character: InfoChars) => void;
 }> = ({ character, handleModal }) => {
+  const [imageSource, setImageSource] = useState<string | null>(null);
+  const cardRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    const card = cardRef.current;
+    if (!card) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+
+        void character.loadImage().then(setImageSource);
+        observer.disconnect();
+      },
+      { rootMargin: "180px" }
+    );
+
+    observer.observe(card);
+    return () => observer.disconnect();
+  }, [character]);
+
   return (
     <S.ImageContainer
+      ref={cardRef}
+      type="button"
       onClick={() => handleModal(character)}
       fold={character.fold || 1}
-      foldAngle={character.foldAngle || 45}
-      tape={character.tape || 1}
-      tapeColor={character.tapeColor}
+      aria-label={`Conhecer ${character.name}`}
     >
       <S.Hint>{character.presentation}</S.Hint>
-      <S.Image src={character.img} />
-      <h1>{character.name}</h1>
+      {imageSource ? (
+        <S.Image src={imageSource} alt={`Ilustração de ${character.name}`} decoding="async" />
+      ) : (
+        <S.ImagePlaceholder aria-hidden="true" />
+      )}
+      <S.Name>{character.name}</S.Name>
     </S.ImageContainer>
   );
 };
 
 const Personagens: React.FC = () => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [selectedCharacter, setSelectedCharacter] = useState<InfoChars>({
-    name: "Ada",
-    img: I.imgAda,
-    presentation: "Olá novamente! Clique em mim para me conhecer melhor!",
-    info: "Exemplo",
-  });
+  const [selectedCharacter, setSelectedCharacter] = useState<InfoChars>(infoChars[0]);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
-  const handleModal = useCallback(
-    (character: InfoChars) => {
-      setModalOpen((prev) => !prev);
-      setSelectedCharacter(character);
-    },
-    []
-  );
+  const handleModal = useCallback((character: InfoChars) => {
+    setSelectedCharacter(character);
+    setSelectedImage(null);
+    setModalOpen(true);
+    void character.loadImage().then(setSelectedImage);
+  }, []);
 
   const handleCloseModal = () => {
     setModalOpen(false);
   };
-
-  const characters = useMemo(() => {
-    const charactersArray = infoChars.map((character) => (
-      <Character handleModal={handleModal} key={character.name} character={character} />
-    ));
-
-    const kauaneIndex = charactersArray.findIndex(
-      (character) => character.props.character.name === "Margarete"
-    );
-
-    const newArray = [...charactersArray];
-    newArray.splice(
-      kauaneIndex,
-      0,
-      <>
-        {/* <S.Ornaments key="ornaments">
-          <S.Eraser src={Eraser} />
-          <S.Pencil src={Pencil} />
-        </S.Ornaments> */}
-      </>
-    );
-
-    return newArray;
-  }, [handleModal]);
 
   return (
     <S.Container>
       <ModalCharacters
         open={modalOpen}
         handleClose={handleCloseModal}
-        imgSrc={selectedCharacter ? selectedCharacter.img : ''}
-        text={selectedCharacter ? selectedCharacter.info : ''}
-        title={selectedCharacter ? selectedCharacter.name : ''}
+        imgSrc={selectedImage}
+        text={selectedCharacter.info}
+        title={selectedCharacter.name}
       />
-      {characters}
+      <S.PageHeader>
+        <S.Eyebrow>A turma da Ada</S.Eyebrow>
+        <S.PageTitle>Personagens que transformam perguntas em descobertas.</S.PageTitle>
+        <S.PageIntro>Escolha alguém para conhecer sua história.</S.PageIntro>
+      </S.PageHeader>
+      <S.CharacterGrid>
+        {infoChars.map((character) => (
+          <Character handleModal={handleModal} key={character.name} character={character} />
+        ))}
+      </S.CharacterGrid>
     </S.Container>
   );
 };

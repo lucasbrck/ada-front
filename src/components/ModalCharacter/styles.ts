@@ -119,3 +119,18 @@ export const Img = styled.img`
     grid-area: auto;
   }
 `;
+
+export const ImageLoading = styled.div`
+  display: grid;
+  grid-area: 1 / 1 / 3 / 2;
+  width: min(280px, 70vw);
+  aspect-ratio: 0.72;
+  place-items: center;
+  color: #43596b;
+  font-family: ${Fonts.GilroySemiBold}, sans-serif;
+  background: #e7f3f4;
+
+  @media (width <= 700px) {
+    grid-area: auto;
+  }
+`;

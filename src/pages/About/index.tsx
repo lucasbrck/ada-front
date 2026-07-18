@@ -6,12 +6,15 @@ import Autora from "assets/images/autora.jpg";
 
 export const About: React.FC = () => {
   return (
-    <>
       <S.Container>
-        <S.Title>Sobre a criação da Ada</S.Title>
-        <S.TextsContainer>
+        <S.PageHeader>
+          <S.Eyebrow>Conheça o projeto</S.Eyebrow>
+          <S.PageTitle>Histórias para aprender, pensar e conversar.</S.PageTitle>
+          <S.Intro>O Portal da Ada aproxima educação, arte e cotidiano por meio das tirinhas.</S.Intro>
+        </S.PageHeader>
+        <S.StorySection>
           <S.ContentContainer>
-            <S.Title>Quem é Ada?</S.Title>
+            <S.SectionTitle>Quem é Ada?</S.SectionTitle>
             <S.Content>
               Ada foi uma personagem criada por uma discente da pós-graduação em
               Educação, juntamente com um artista gráfico no ano de 2019. A
@@ -25,12 +28,12 @@ export const About: React.FC = () => {
             </S.Content>
           </S.ContentContainer>
           <S.Image src={Ada} alt="Ilustração da Ada" />
-        </S.TextsContainer>
-        <S.TextsContainer>
+        </S.StorySection>
+        <S.StorySection $reverse>
           <S.Image src={Almanaque} alt="Almanaque da Ada" />
 
           <S.ContentContainer>
-            <S.Title>O Almanaque!</S.Title>
+            <S.SectionTitle>O Almanaque</S.SectionTitle>
             <S.Content>
               Incialmente, a criação das histórias da Ada tinha uma
               intencionalidade pedagógica, contudo, o projeto se expandiu e
@@ -41,9 +44,9 @@ export const About: React.FC = () => {
               histórias que visam a educação financeira dos alunos nas escolas.
             </S.Content>
           </S.ContentContainer>
-        </S.TextsContainer>
-        <S.ContentContainer style={{ width: "70%" }}>
-          <S.Title>{"Aqui estamos (e de cara nova!)"}</S.Title>
+        </S.StorySection>
+        <S.ContentContainer>
+          <S.SectionTitle>{"Aqui estamos (e de cara nova!)"}</S.SectionTitle>
           <S.Content>
             Novamente, o projeto foi ampliado, o que resultou na materialização
             de um novo produto pedagógico, o portal da Ada. No entanto, o portal
@@ -53,9 +56,9 @@ export const About: React.FC = () => {
             brincadeiras, educação, humor, entre outros.{" "}
           </S.Content>
         </S.ContentContainer>
-        <S.TextsContainer>
+        <S.StorySection>
           <S.ContentContainer>
-            <S.Title>Idealizadores</S.Title>
+            <S.SectionTitle>Idealizadores</S.SectionTitle>
             <S.Content>
               Isabely Melo da Silva, graduada em Letras (2018) em Língua
               Portuguesa e Inglesa, na Universidade Federal de São João del-Rei
@@ -67,18 +70,13 @@ export const About: React.FC = () => {
               graduação de Ciências da Computação na Universidade Federal de São
               João del-Rei, que possui uma empresa de design gráfico.
             </S.Content>
-            <a href="https://www.instagram.com/davibatnas/" target="_blank" rel="noreferrer">
-              <img
-                height="32"
-                width="32"
-                src="https://cdn.jsdelivr.net/npm/simple-icons@v10/icons/instagram.svg"
-              />
-            </a>
+            <S.InstagramLink href="https://www.instagram.com/davibatnas/" target="_blank" rel="noreferrer">
+              Perfil de Davi Batista no Instagram
+            </S.InstagramLink>
           </S.ContentContainer>
-          <S.Image src={Autora} alt="Foto da autora Isabely Melo" />
-        </S.TextsContainer>
+          <S.Image src={Autora} alt="Foto da autora Isabely Melo" loading="lazy" decoding="async" />
+        </S.StorySection>
       </S.Container>
-    </>
   );
 };
 

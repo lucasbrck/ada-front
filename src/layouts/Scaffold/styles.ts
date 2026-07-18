@@ -24,18 +24,18 @@ export const Paper = styled.div`
   height: 100%;
   min-height: 100vh;
   position: relative;
-  padding-top: 40px;
+  padding-top: 22px;
   padding-bottom: 40px;
-  background-color: white;
-  box-shadow: 0px 0px 5px 0px #888;
+  background-color: #fffef9;
+  box-shadow: 0 0 24px rgba(31, 54, 70, 0.12);
   &&::before {
     content: "";
     width: 2px;
     height: 100%;
     position: absolute;
     top: 0;
-    left: 80px;
-    background-color: rgba(255, 0, 0, 0.6);
+    left: max(48px, calc((100% - 1180px) / 2 - 32px));
+    background-color: rgba(222, 73, 60, 0.45);
     @media (width <= 600px) {
       left: 40px;
     }
@@ -45,7 +45,13 @@ export const Paper = styled.div`
 export const Lines = styled.div`
   height: 100%;
   min-height: 100vh;
-  background-image: repeating-linear-gradient(white 0px, white 24px, teal 26px);
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 31px,
+    rgba(73, 159, 176, 0.16) 32px,
+    transparent 33px
+  );
 `;
 export const StyledContainer = styled.div`
   display: flex;
