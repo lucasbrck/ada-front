@@ -63,7 +63,7 @@ const Games = () => {
         <ChallengePanel>
           <Eyebrow>Desafio guiado</Eyebrow><h2>{challenge.title}</h2><p>{challenge.prompt}</p><small>{challenge.tip}</small>
           <ChallengeChoices>{challenges.map((item) => <ChallengeButton type="button" key={item.id} $active={item.id === challengeId} onClick={() => { setChallengeId(item.id); setMode(item.mode); }}>{item.title}</ChallengeButton>)}</ChallengeChoices>
-          <Feedback $complete={challengeComplete}>{challengeComplete ? "Desafio concluído! Seu padrão usa a transformação certa e tem bordas compatíveis." : "Escolha o modo do desafio, desenhe uma marca e use Cortar borda para concluir."}</Feedback>
+          <Feedback $complete={challengeComplete}>{challengeComplete ? "Desafio concluído! Seu padrão usa a transformação certa e tem bordas compatíveis." : "Escolha o modo do desafio e desenhe uma marca para concluir."}</Feedback>
         </ChallengePanel>
         <LessonPanel>
           <Eyebrow>Laboratório de simetrias</Eyebrow><h2>Os 17 grupos de parede</h2><p>São as combinações possíveis de movimentos que preenchem o plano. Explore os quatro movimentos ativos acima e veja o mapa completo.</p>

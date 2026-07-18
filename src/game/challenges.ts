@@ -13,7 +13,7 @@ export const challenges: Challenge[] = [
     id: "translation",
     title: "Passos da Ada",
     mode: "translation",
-    prompt: "Desenhe uma marca e corte uma borda para criar uma faixa que se repete.",
+    prompt: "Desenhe uma marca para criar uma faixa que se repete.",
     tip: "Na translação, a peça só desliza para os lados.",
   },
   {

@@ -15,7 +15,7 @@ const tools: { id: EditorTool; label: string }[] = [
   { id: "select", label: "Selecionar" }, { id: "pencil", label: "Lápis" },
   { id: "line", label: "Linha" }, { id: "rectangle", label: "Retângulo" },
   { id: "ellipse", label: "Elipse" }, { id: "polygon", label: "Polígono" },
-  { id: "fill", label: "Balde" }, { id: "eraser", label: "Borracha" }, { id: "edge-cut", label: "Cortar borda" },
+  { id: "fill", label: "Balde" }, { id: "eraser", label: "Borracha" },
 ];
 
 const DrawingEditor = ({ tile, onTileChange, onArtworkChange }: Props) => {
@@ -122,16 +122,68 @@ const DrawingEditor = ({ tile, onTileChange, onArtworkChange }: Props) => {
       return distances.sort((first, second) => first[1] - second[1])[0][0];
     };
 
+    const projectToBorder = (point: paper.Point) => {
+      const bounds = scope.view.bounds;
+      const distances: [TileEdge, number][] = [
+        ["top", point.y - bounds.top], ["right", bounds.right - point.x],
+        ["bottom", bounds.bottom - point.y], ["left", point.x - bounds.left],
+      ];
+      const [edge, distance] = distances.sort((first, second) => first[1] - second[1])[0];
+      if (distance > 18) return null;
+      if (edge === "top") return { edge, point: new scope.Point(point.x, bounds.top) };
+      if (edge === "right") return { edge, point: new scope.Point(bounds.right, point.y) };
+      if (edge === "bottom") return { edge, point: new scope.Point(point.x, bounds.bottom) };
+      return { edge, point: new scope.Point(bounds.left, point.y) };
+    };
+
+    const boundaryPosition = (point: paper.Point) => {
+      const bounds = scope.view.bounds;
+      if (Math.abs(point.y - bounds.top) < 0.1) return point.x - bounds.left;
+      if (Math.abs(point.x - bounds.right) < 0.1) return bounds.width + point.y - bounds.top;
+      if (Math.abs(point.y - bounds.bottom) < 0.1) return bounds.width + bounds.height + bounds.right - point.x;
+      return bounds.width * 2 + bounds.height + bounds.bottom - point.y;
+    };
+
+    const pointOnBoundary = (position: number) => {
+      const bounds = scope.view.bounds;
+      const perimeter = 2 * (bounds.width + bounds.height);
+      const normalized = ((position % perimeter) + perimeter) % perimeter;
+      if (normalized <= bounds.width) return new scope.Point(bounds.left + normalized, bounds.top);
+      if (normalized <= bounds.width + bounds.height) return new scope.Point(bounds.right, bounds.top + normalized - bounds.width);
+      if (normalized <= bounds.width * 2 + bounds.height) return new scope.Point(bounds.right - (normalized - bounds.width - bounds.height), bounds.bottom);
+      return new scope.Point(bounds.left, bounds.bottom - (normalized - bounds.width * 2 - bounds.height));
+    };
+
+    const clockwiseBoundaryPath = (from: paper.Point, to: paper.Point) => {
+      const bounds = scope.view.bounds;
+      const perimeter = 2 * (bounds.width + bounds.height);
+      const fromPosition = boundaryPosition(from);
+      const distance = (boundaryPosition(to) - fromPosition + perimeter) % perimeter;
+      const corners = [0, bounds.width, bounds.width + bounds.height, bounds.width * 2 + bounds.height, perimeter]
+        .map((corner) => ({ corner, distance: (corner - fromPosition + perimeter) % perimeter }))
+        .filter((corner) => corner.distance > 0.1 && corner.distance < distance - 0.1)
+        .sort((first, second) => first.distance - second.distance)
+        .map((corner) => pointOnBoundary(corner.corner));
+      return [...corners, to];
+    };
+
     paperTool.onMouseDown = (event: paper.ToolEvent) => {
       const mode = currentTool();
       startPoint = event.point;
       const hit = artLayer.hitTest(event.point, { fill: true, stroke: true, tolerance: 10 });
+      const enclosedPath = [...artLayer.children].reverse().find(
+        (item): item is paper.Path => item instanceof scope.Path && item.closed && item.contains(event.point)
+      );
       if (mode === "eraser" && hit?.item) hit.item.remove();
-      if (mode === "fill" && hit?.item) {
-        if (hit.item instanceof scope.Path && hit.item.closed) {
-          hit.item.fillColor = new scope.Color(colorRef.current);
+      if (mode === "fill") {
+        const target = hit?.item ?? enclosedPath;
+        if (target instanceof scope.Path && target.closed) {
+          target.fillColor = new scope.Color(colorRef.current);
+          target.strokeColor = new scope.Color(colorRef.current);
+        } else if (target) {
+          target.strokeColor = new scope.Color(colorRef.current);
         } else {
-          hit.item.strokeColor = new scope.Color(colorRef.current);
+          return;
         }
       }
       if (mode === "select") activeItem = hit?.item ?? null;
@@ -187,7 +239,34 @@ const DrawingEditor = ({ tile, onTileChange, onArtworkChange }: Props) => {
     paperTool.onMouseUp = () => {
       const mode = currentTool();
       if (mode === "pencil" && activeItem instanceof scope.Path && activeItem.segments.length > 2) {
-        activeItem.smooth({ type: "continuous" });
+        const pencilPath = activeItem;
+        let closedByBorder = false;
+        const firstPoint = pencilPath.firstSegment?.point;
+        const lastPoint = pencilPath.lastSegment?.point;
+        if (firstPoint && lastPoint && firstPoint.getDistance(lastPoint) < 20) {
+          pencilPath.lastSegment.point = firstPoint;
+          pencilPath.closed = true;
+        } else if (firstPoint && lastPoint) {
+          const firstBorder = projectToBorder(firstPoint);
+          const lastBorder = projectToBorder(lastPoint);
+          if (firstBorder && lastBorder) {
+            pencilPath.firstSegment.point = firstBorder.point;
+            pencilPath.lastSegment.point = lastBorder.point;
+            const clockwise = clockwiseBoundaryPath(lastBorder.point, firstBorder.point);
+            const counterClockwise = clockwiseBoundaryPath(firstBorder.point, lastBorder.point).slice(0, -1).reverse();
+            const distance = (points: paper.Point[]) => points.reduce(
+              (total, point, index) => total + (index === 0 ? 0 : point.getDistance(points[index - 1])),
+              0
+            );
+            const clockwiseRoute = [lastBorder.point, ...clockwise];
+            const counterClockwiseRoute = [lastBorder.point, ...counterClockwise, firstBorder.point];
+            const route = distance(clockwiseRoute) <= distance(counterClockwiseRoute) ? clockwise : counterClockwise;
+            route.forEach((point) => pencilPath.add(point));
+            pencilPath.closed = true;
+            closedByBorder = true;
+          }
+        }
+        if (!closedByBorder) pencilPath.smooth({ type: "continuous" });
       }
       if (activeItem && ["pencil", "line", "rectangle", "ellipse", "polygon"].includes(mode)) addSymmetry(activeItem);
       activeItem = null;
@@ -237,7 +316,7 @@ const DrawingEditor = ({ tile, onTileChange, onArtworkChange }: Props) => {
         <button type="button" onClick={clear}>Limpar</button>
       </Options>
       <CanvasWrap><canvas ref={canvasRef} width="480" height="480" aria-label="Editor vetorial da peça" /></CanvasWrap>
-      <EditorFooter>Use “Cortar borda” perto de qualquer limite da grade para criar o encaixe complementar.</EditorFooter>
+      <EditorFooter>Use toda a grade para criar livremente. O corte de bordas está temporariamente em standby.</EditorFooter>
     </EditorShell>
   );
 };
